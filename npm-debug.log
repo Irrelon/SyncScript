@@ -1,0 +1,115 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'esprima' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 verbose cache add [ 'esprima', null ]
+5 verbose cache add name=undefined spec="esprima" args=["esprima",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'esprima',
+6 verbose parsed url   path: 'esprima',
+6 verbose parsed url   href: 'esprima' }
+7 silly lockFile 69931885-esprima esprima
+8 verbose lock esprima /Users/robevans/.npm/69931885-esprima.lock
+9 silly lockFile 69931885-esprima esprima
+10 silly lockFile 69931885-esprima esprima
+11 verbose addNamed [ 'esprima', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile 1e02aa9d-esprima esprima@
+14 verbose lock esprima@ /Users/robevans/.npm/1e02aa9d-esprima.lock
+15 silly addNameRange { name: 'esprima', range: '*', hasData: false }
+16 verbose request where is /esprima
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id 603ed5067b23583d
+19 verbose url raw /esprima
+20 verbose url resolving [ 'https://registry.npmjs.org/', './esprima' ]
+21 verbose url resolved https://registry.npmjs.org/esprima
+22 verbose request where is https://registry.npmjs.org/esprima
+23 info trying registry request attempt 1 at 14:30:10
+24 verbose etag "59APBWAE81NISXNL9VRHB15V6"
+25 http GET https://registry.npmjs.org/esprima
+26 http 200 https://registry.npmjs.org/esprima
+27 silly registry.get cb [ 200,
+27 silly registry.get   { date: 'Tue, 11 Nov 2014 14:30:11 GMT',
+27 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+27 silly registry.get     etag: '"14SRY426E3O3A5WDXDUOBH3ZM"',
+27 silly registry.get     'content-type': 'application/json',
+27 silly registry.get     'cache-control': 'max-age=60',
+27 silly registry.get     'content-length': '32150',
+27 silly registry.get     'accept-ranges': 'bytes',
+27 silly registry.get     via: '1.1 varnish',
+27 silly registry.get     age: '33',
+27 silly registry.get     'x-served-by': 'cache-fra1246-FRA',
+27 silly registry.get     'x-cache': 'HIT',
+27 silly registry.get     'x-cache-hits': '3',
+27 silly registry.get     'x-timer': 'S1415716211.061359,VS0,VE0',
+27 silly registry.get     vary: 'Accept',
+27 silly registry.get     'keep-alive': 'timeout=10, max=50',
+27 silly registry.get     connection: 'Keep-Alive' } ]
+28 silly addNameRange number 2 { name: 'esprima', range: '*', hasData: true }
+29 silly addNameRange versions [ 'esprima',
+29 silly addNameRange   [ '0.7.0',
+29 silly addNameRange     '0.8.0',
+29 silly addNameRange     '0.8.1',
+29 silly addNameRange     '0.8.2',
+29 silly addNameRange     '0.9.0',
+29 silly addNameRange     '0.9.1',
+29 silly addNameRange     '0.9.2',
+29 silly addNameRange     '0.9.3',
+29 silly addNameRange     '0.9.4',
+29 silly addNameRange     '0.9.5',
+29 silly addNameRange     '0.9.6',
+29 silly addNameRange     '0.9.7',
+29 silly addNameRange     '0.9.8',
+29 silly addNameRange     '0.9.9',
+29 silly addNameRange     '1.0.0',
+29 silly addNameRange     '1.0.1',
+29 silly addNameRange     '1.0.2',
+29 silly addNameRange     '1.0.3',
+29 silly addNameRange     '1.0.4',
+29 silly addNameRange     '1.1.0',
+29 silly addNameRange     '1.1.1',
+29 silly addNameRange     '1.2.0',
+29 silly addNameRange     '1.2.1',
+29 silly addNameRange     '1.2.2' ] ]
+30 verbose addNamed [ 'esprima', '1.2.2' ]
+31 verbose addNamed [ '1.2.2', '1.2.2' ]
+32 silly lockFile ee83809c-esprima-1-2-2 esprima@1.2.2
+33 verbose lock esprima@1.2.2 /Users/robevans/.npm/ee83809c-esprima-1-2-2.lock
+34 silly lockFile 42c14aed-js-org-esprima-esprima-1-2-2-tgz https://registry.npmjs.org/esprima/-/esprima-1.2.2.tgz
+35 verbose lock https://registry.npmjs.org/esprima/-/esprima-1.2.2.tgz /Users/robevans/.npm/42c14aed-js-org-esprima-esprima-1-2-2-tgz.lock
+36 verbose addRemoteTarball [ 'https://registry.npmjs.org/esprima/-/esprima-1.2.2.tgz',
+36 verbose addRemoteTarball   '76a0fd66fcfe154fd292667dc264019750b1657b' ]
+37 info retry fetch attempt 1 at 14:30:11
+38 verbose fetch to= /var/folders/rn/p8cbzmp554s47gcpbv_r9j640000gn/T/npm-2217-04Fc5O3c/registry.npmjs.org/esprima/-/esprima-1.2.2.tgz
+39 http GET https://registry.npmjs.org/esprima/-/esprima-1.2.2.tgz
+40 http 200 https://registry.npmjs.org/esprima/-/esprima-1.2.2.tgz
+41 silly lockFile 42c14aed-js-org-esprima-esprima-1-2-2-tgz https://registry.npmjs.org/esprima/-/esprima-1.2.2.tgz
+42 silly lockFile 42c14aed-js-org-esprima-esprima-1-2-2-tgz https://registry.npmjs.org/esprima/-/esprima-1.2.2.tgz
+43 silly lockFile ee83809c-esprima-1-2-2 esprima@1.2.2
+44 silly lockFile ee83809c-esprima-1-2-2 esprima@1.2.2
+45 silly lockFile 1e02aa9d-esprima esprima@
+46 silly lockFile 1e02aa9d-esprima esprima@
+47 error Error: EACCES, mkdir '/Users/robevans/.npm/esprima/1.2.2'
+47 error  { [Error: EACCES, mkdir '/Users/robevans/.npm/esprima/1.2.2']
+47 error   errno: 3,
+47 error   code: 'EACCES',
+47 error   path: '/Users/robevans/.npm/esprima/1.2.2' }
+48 error Please try running this command again as root/Administrator.
+49 error System Darwin 14.0.0
+50 error command "node" "/usr/local/bin/npm" "install" "esprima"
+51 error cwd /Users/robevans/Dropbox/Development/codeQuick
+52 error node -v v0.10.32
+53 error npm -v 1.4.28
+54 error path /Users/robevans/.npm/esprima/1.2.2
+55 error code EACCES
+56 error errno 3
+57 error stack Error: EACCES, mkdir '/Users/robevans/.npm/esprima/1.2.2'
+58 verbose exit [ 3, true ]

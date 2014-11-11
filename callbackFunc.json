@@ -1,0 +1,87 @@
+{
+	"type": "ExpressionStatement",
+	"expression": {
+		"type": "CallExpression",
+		"callee": {
+			"type": "MemberExpression",
+			"computed": false,
+			"object": {
+				"type": "ThisExpression"
+			},
+			"property": {
+				"type": "Identifier",
+				"name": "async"
+			}
+		},
+		"arguments": [
+			{
+				"type": "Literal",
+				"value": "moo",
+				"raw": "'moo'"
+			},
+			{
+				"type": "FunctionExpression",
+				"id": null,
+				"params": [
+					{
+						"type": "Identifier",
+						"name": "err"
+					},
+					{
+						"type": "Identifier",
+						"name": "moo"
+					}
+				],
+				"defaults": [],
+				"body": {
+					"type": "BlockStatement",
+					"body": [
+						{
+							"type": "ExpressionStatement",
+							"expression": {
+								"type": "CallExpression",
+								"callee": {
+									"type": "MemberExpression",
+									"computed": false,
+									"object": {
+										"type": "Identifier",
+										"name": "console"
+									},
+									"property": {
+										"type": "Identifier",
+										"name": "log"
+									}
+								},
+								"arguments": [
+									{
+										"type": "Identifier",
+										"name": "moo"
+									}
+								]
+							}
+						},
+						{
+							"type": "ExpressionStatement",
+							"expression": {
+								"type": "AssignmentExpression",
+								"operator": "=",
+								"left": {
+									"type": "Identifier",
+									"name": "foo"
+								},
+								"right": {
+									"type": "Literal",
+									"value": true,
+									"raw": "true"
+								}
+							}
+						}
+					]
+				},
+				"rest": null,
+				"generator": false,
+				"expression": false
+			}
+		]
+	}
+}
