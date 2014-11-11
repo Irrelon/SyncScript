@@ -1,4 +1,4 @@
-# IrrelonSyncScript
+# Irrelon SyncScript
 If you've coded in JavaScript for any length of time you will know that pretty soon you start to
 pile up tons of callbacks (callback-hell as it is sometimes referred). You hate it, I hate it and
 so does everyone else that codes in JS but it is a necessary evil... or is it?
@@ -25,7 +25,7 @@ if (!err && response.status === 200) {
 ```
 
 Notice how we threw away the callback function and just used the err, repsonse and body variables as if they were immediately
-defined? This is how IrrelonSyncScript (SyncScript for short) looks. You'll also notice that when an async method has multiple
+defined? This is how Irrelon SyncScript looks. You'll also notice that when an async method has multiple
 return values we simply define multiple variables to collect them:
 
 ```
