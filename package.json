@@ -1,0 +1,30 @@
+{
+	"author": "Rob Evans (Irrelon Software Limited)",
+	"name": "IrrelonSyncScript",
+	"description": "Write clean, readable synchronous JavaScript code and output to callback-based async code automatically. Compiles to readable, compatible JS code that runs everywhere and on every browser. No libraries or dependencies, just clean code.",
+	"keywords": [
+		"synchronous",
+		"javascript",
+		"code",
+		"transpiler",
+		"transcoder",
+		"transformer",
+		"compiler"
+	],
+	"homepage": "https://www.irrelon.com/",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/coolbloke1324/IrrelonSyncScript"
+	},
+	"version": "1.0.0",
+	"dependencies": {
+		"esprima": "1.2.2",
+		"escodegen": "1.4.1",
+		"estraverse": "1.7.1"
+	},
+	"main": "./index",
+	"engines": {
+		"node": ">=0.10.0"
+	},
+	"license": "MIT"
+}
