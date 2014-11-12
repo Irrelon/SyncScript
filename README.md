@@ -79,6 +79,10 @@ if (!err) {
 Synchronous code is easier to read and understand and requires less boilerplate effort and more of what
 actually makes your application work.
 
+Keep in mind that even though it appears to do so, SyncScript is NOT blocking the thread and does not
+interupt execution of code. This means that your code stays responsive and does not cause UI or threads
+to block.
+
 ## Setting Callback Scope
 You can section areas of code into waiting for async calls to complete or not by wrapping them in curly
 braces. Take the following code for example. The second call to addSync waits for the first to finish:
