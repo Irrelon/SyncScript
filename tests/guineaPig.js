@@ -5,10 +5,9 @@ var myObj = {
 };
 
 var asyncCall = function (url, callback) {
-	var response, body = sync(myObj.insideObj.request(url));
+	var err, response, body = sync(myObj.insideObj.request(url));
 	callback(err, response, body);
 };
 
-var requestResponse, googleBody = sync(asyncCall('http://www.google.com'));
+var err, requestResponse, googleBody = sync(asyncCall('http://www.google.com'));
 console.log(googleBody);
-

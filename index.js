@@ -77,6 +77,7 @@ Parser.prototype.parse = function (code) {
 		found = true;
 
 	self.ast = esprima.parse(code);
+	//require('fs').writeFileSync('ast.json', JSON.stringify(self.ast));
 
 	while (found) {
 		found = false;
@@ -216,12 +217,7 @@ Parser.prototype.newAwait = function (contextStack, currentNode, resultVarNames)
 		var newArgs = callDetails.arguments.concat([{
 			"type": "FunctionExpression",
 			"id": null,
-			"params": [
-				{
-					"type": "Identifier",
-					"name": "err"
-				}
-			].concat(resultVars),
+			"params": resultVars,
 			"defaults": [],
 			"body": {
 				"type": "BlockStatement",
