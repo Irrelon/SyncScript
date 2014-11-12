@@ -93,7 +93,19 @@ E.g.
 
 	syncscript ./test/guineaPig.js ./test/output.js
 
+If you leave off the second argument the output is sent to stdout which allows you to pipe it elsewhere.
+
 ### Use From JetBrains IDE via File Watcher
+File watchers auto-execute programs against your code as you make changes. A good example would be Google's
+closure compiler which you can set up in WebStorm or PHPStorm to auto-compile and minify your JavaScript
+code as you make changes.
+
+Since SyncScript's command-line interface supports both file-based output and stdout you can use a file
+watcher to compile your SyncScript code on the fly as you make changes into a normal JavaScript file.
+
+Further instructions and screenshots coming shortly...
+
+### Using Compiler in Your Own Node.js Projects
 This section is being updated, please hang tight! SyncScript works by compiling your source code to standard JavaScript
 callbacks and requires Node.js to do the compilation part. Once the output file is generated it can run on all browsers
 and Node.js as if you wrote the callback-hell version yourself.
