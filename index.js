@@ -1,9 +1,10 @@
 var esprima = require('esprima'),
 	estraverse = require('estraverse'),
-	escodegen = require('escodegen');
+	escodegen = require('escodegen'),
+	AstTree = require('./AstTree.js');
 
 var Parser = function () {
-	this._debugOn = false;
+	this._debugOn = true;
 	this._tabs = [];
 	this._awaitName = 'sync';
 };
@@ -48,6 +49,120 @@ Parser.prototype.bodyIndex = function (bodyArr, node) {
 	return indexOfNode;
 };
 
+Parser.prototype.sync = function (node, astTree) {
+	var self = this,
+		currentBlock = node.block(),
+		bodyElems,
+		awaitBodyIndex,
+		resultVars = [],
+		resultVarNames = [],
+		newCode,
+		range,
+		breakOn,
+		varDec,
+		run,
+		i;
+
+	awaitBodyIndex = node.blockIndex();
+
+	// Get the parent variable delcaration
+	varDec = node.parent('VariableDeclaration');
+	astTree.find(function (item) {
+		if (item.type() === 'VariableDeclarator' && item.parent() === varDec) {
+			resultVarNames.push(item.get('id').name);
+		}
+	}, varDec);
+
+	// Determine which block type we are dealing with and normalise
+	switch (currentBlock.type()) {
+		case 'Program':
+		case 'BlockStatement':
+			bodyElems = currentBlock.body();
+			breakOn = '';
+			range = [awaitBodyIndex + 1, bodyElems.length];
+			run = true;
+			break;
+
+		case 'SwitchCase':
+			bodyElems = currentBlock.body();
+			breakOn = 'BreakStatement';
+			range = [awaitBodyIndex + 1];
+			run = true;
+
+			// Find the break statement
+			for (i = awaitBodyIndex + 1; i < bodyElems.length; i++) {
+				if (bodyElems[i] && bodyElems[i].type === 'BreakStatement') {
+					// Found the break for this case, record it
+					range[1] = i;
+					break;
+				}
+			}
+
+			if (range[1] === undefined) {
+				// No end point, don't run
+				run = false;
+			}
+			break;
+
+		default:
+			break;
+	}
+
+	if (run) {
+		if (!resultVarNames) {
+			resultVarNames = ['__returnData'];
+		}
+
+		resultVarNames.forEach(function (varName) {
+			resultVars.push({
+				"type": "Identifier",
+				"name": varName
+			});
+		});
+
+		if (awaitBodyIndex > -1) {
+			// Get the current call details (the method the async call should actually call)
+			var callDetails = node.get('arguments')[0];
+
+			// Move all existing body elements inside this call
+			var newArgs = callDetails.arguments.concat([{
+				"type": "FunctionExpression",
+				"id": null,
+				"params": resultVars,
+				"defaults": [],
+				"body": {
+					"type": "BlockStatement",
+					"body": bodyElems.slice(range[0], range[1])
+				},
+				"rest": null,
+				"generator": false,
+				"expression": false
+			}]);
+
+			var newAwait = {
+				"type": "ExpressionStatement",
+				"expression": {
+					"type": "CallExpression",
+					"callee": callDetails.callee,
+					"arguments": newArgs
+				}
+			};
+
+			bodyElems.splice(awaitBodyIndex, bodyElems.length - awaitBodyIndex);
+			bodyElems.push(newAwait);
+
+			newCode = escodegen.generate(astTree._ast);
+			//if (require('fs').existsSync('out.js')) { require('fs').unlinkSync('out.js'); }
+			//require('fs').writeFileSync('out.js', newCode);
+			self.ast = esprima.parse(newCode);
+
+			return true;
+		}
+	}
+
+	return false;
+};
+
 Parser.prototype.parse = function (code) {
 	var self = this,
 		contextStack = {
@@ -74,176 +189,38 @@ Parser.prototype.parse = function (code) {
 				return this.VariableDeclaration[this.VariableDeclaration.length - 1];
 			}
 		},
-		found = true;
+		found = true,
+		astTree;
 
 	self.ast = esprima.parse(code);
-	//require('fs').writeFileSync('ast.json', JSON.stringify(self.ast));
 
 	while (found) {
-		found = false;
+		astTree = new AstTree(self.ast);
+		//if (require('fs').existsSync('ast.json')) { require('fs').unlinkSync('ast.json'); }
+		//require('fs').writeFileSync('ast.json', JSON.stringify(self.ast));
 
-		estraverse.replace(self.ast, {
-			enter: function (currentNode, currentParent) {
-				switch (currentNode.type) {
-					case 'Program':
-						contextStack.BlockStatement.push(currentNode);
-						break;
+		var syncCalls = astTree.find(function (node) {
+			var type = node.type(),
+				callName;
 
-					case 'BlockStatement':
-						contextStack.BlockStatement.push(currentNode);
-						break;
+			if (node.type() === 'CallExpression') {
+				callName = node.obj().callee.name;
 
-					case 'VariableDeclaration':
-						if (contextStack.BlockStatement.length) {
-							self.debug('Pushing VariableDeclaration');
-							contextStack.VariableDeclaration.push({
-								node: currentNode,
-								vars: []
-							});
-						}
-						break;
-
-					case 'VariableDeclarator':
-						if (contextStack.VariableDeclaration.length) {
-							self.debug('Pushing VariableDeclarator: ' + currentNode.id.name);
-							contextStack.currentVariableDeclaration().vars.push(currentNode.id.name);
-						}
-						break;
-
-					case 'ExpressionStatement':
-						self.debug('Pushing ExpressionStatement');
-						contextStack.ExpressionStatement.push(currentNode);
-						break;
-
-					case 'AssignmentExpression':
-						self.debug('Pushing AssignmentExpression: ' + currentNode.left.name);
-						contextStack.AssignmentExpression.push(currentNode);
-						break;
-
-					case 'CallExpression':
-						if (currentNode.callee.name === self._awaitName) {
-							// We have encountered our special await call
-							// Check what it is encapsulated inside
-							if (contextStack.VariableDeclaration.length) {
-								// New variable delcared as result of await
-								var assignTo = contextStack.currentVariableDeclaration().vars;
-								self.debug('Call to await assignment to new variable: ', assignTo);
-
-								found = self.newAwait(contextStack, currentNode, assignTo);
-								this.break();
-							} else if (contextStack.AssignmentExpression.length) {
-								// Existing variable expression declared as result of await
-								//var assignTo = contextStack.AssignmentExpression[contextStack.AssignmentExpression.length - 1].left.name;
-								//self.debug('Call to await assignment to expression: ' + assignTo);
-								// We don't want to support this type of call (ie no var at front)
-							} else {
-								// No expression, just a call to await
-								self.debug('Call to await unnamed');
-
-								// Find location index of this await
-								found = self.newAwait(contextStack, currentNode);
-								this.break();
-							}
-						}
-						break;
-				}
-			},
-			leave: function (currentNode, currentParent) {
-				switch (currentNode.type) {
-					case 'Program':
-						return contextStack.BlockStatement.pop();
-						break;
-
-					case 'BlockStatement':
-						return contextStack.BlockStatement.pop();
-						break;
-
-					case 'VariableDeclaration':
-						if (contextStack.BlockStatement.length) {
-							self.debug('Pulling VariableDeclaration');
-							contextStack.VariableDeclaration.pop();
-						}
-						break;
-
-					/*case 'VariableDeclarator':
-						if (contextStack.BlockStatement.length) {
-							self.debug('Pulling VariableDeclarator: ' + contextStack.VariableDeclarator[contextStack.VariableDeclarator.length - 1].id.name);
-							contextStack.VariableDeclarator.pop();
-						}
-						break;*/
-
-					case 'ExpressionStatement':
-						self.debug('Pulling ExpressionStatement');
-						contextStack.ExpressionStatement.pop();
-						break;
-
-					case 'AssignmentExpression':
-						self.debug('Pulling AssignmentExpression: ' + contextStack.AssignmentExpression[contextStack.AssignmentExpression.length - 1].left.name);
-						contextStack.AssignmentExpression.pop();
-						break;
-
-					case 'CallExpression':
-						break;
+				if (callName === self._awaitName) {
+					return true;
 				}
 			}
 		});
+
+		if (syncCalls.length) {
+			self.sync(syncCalls[0], astTree);
+			found = true;
+		} else {
+			found = false;
+		}
 	}
 
 	return escodegen.generate(self.ast);
-};
-
-Parser.prototype.newAwait = function (contextStack, currentNode, resultVarNames) {
-	var self = this,
-		bodyElems = contextStack.currentBlockStatement().body,
-		awaitBodyIndex = self.bodyIndex(bodyElems, currentNode),
-		resultVars = [];
-
-	if (!resultVarNames) {
-		resultVarNames = ['__returnData'];
-	}
-
-	resultVarNames.forEach(function (varName) {
-		resultVars.push({
-			"type": "Identifier",
-			"name": varName
-		});
-	});
-
-	if (awaitBodyIndex > -1) {
-		// Get the current call details (the method the async call should actually call)
-		var callDetails = currentNode.arguments[0];
-
-		// Move all existing body elements inside this call
-		var newArgs = callDetails.arguments.concat([{
-			"type": "FunctionExpression",
-			"id": null,
-			"params": resultVars,
-			"defaults": [],
-			"body": {
-				"type": "BlockStatement",
-				"body": bodyElems.slice(awaitBodyIndex + 1, bodyElems.length)
-			},
-			"rest": null,
-			"generator": false,
-			"expression": false
-		}]);
-
-		var newAwait = {
-			"type": "ExpressionStatement",
-			"expression": {
-				"type": "CallExpression",
-				"callee": callDetails.callee,
-				"arguments": newArgs
-			}
-		};
-
-		bodyElems.splice(awaitBodyIndex, bodyElems.length - awaitBodyIndex);
-		bodyElems.push(newAwait);
-
-		return true;
-	}
-
-	return false;
 };
 
 module.exports = {

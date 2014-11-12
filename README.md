@@ -1,4 +1,7 @@
 # Irrelon SyncScript
+> This is beta code and should not be relied on for production use yet. It may not work in all cases and
+may generate incorrect output from your code. When it is production ready we will update this message.
+
 Write clean, readable synchronous JavaScript code and output to callback-based async code automatically.
 Compiles to readable, compatible JS code that runs everywhere and on every browser. No libraries or
 dependencies, just clean code.
