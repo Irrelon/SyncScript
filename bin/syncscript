@@ -6,8 +6,23 @@ process.argv = process.argv.map(function(s) {
 	return s.replace(/\001/g, ' ');
 });
 
-var path = require("path");
-var fs = require("fs");
-var lib = path.join(path.dirname(fs.realpathSync(__filename)), '../index.js');
+var path = require("path"),
+	fs = require("fs"),
+	lib = path.join(path.dirname(fs.realpathSync(__filename)), '../index.js'),
+	SyncScriptParser = require(lib).Parser,
+	args = process.argv.slice(2),
+	code;
 
-require(lib).run();
+if (args[0]) {
+	var parser = new SyncScriptParser();
+	parser.awaitName('sync');
+	newCode = parser.parse(fs.readFileSync(args[0]));
+
+	if (args[1]) {
+    	fs.writeFileSync(args[1], newCode);
+    } else {
+    	process.stdout.write(newCode + '\n');
+    }
+} else {
+	process.stdout.write('Error, missing input file\n');
+}

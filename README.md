@@ -78,6 +78,22 @@ Synchronous code is easier to read and understand and requires less boilerplate 
 your application work.
 
 ## How to Use It
+
+### Installation via NPM
+Install SyncScript via npm:
+
+	npm install -g syncscript
+
+### Use From Command Line
+To compile a SyncScript file to JavaScript you can use the command line:
+
+	syncscript <yourinputfile.js> <youroutputfile.js>
+
+E.g.
+
+	syncscript ./test/guineaPig.js ./test/output.js
+
+### Use From JetBrains IDE via File Watcher
 This section is being updated, please hang tight! SyncScript works by compiling your source code to standard JavaScript
 callbacks and requires Node.js to do the compilation part. Once the output file is generated it can run on all browsers
 and Node.js as if you wrote the callback-hell version yourself.
