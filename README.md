@@ -1,4 +1,16 @@
 # Irrelon SyncScript
+Write clean, readable synchronous JavaScript code and output to callback-based async code automatically.
+Compiles to readable, compatible JS code that runs everywhere and on every browser. No libraries or
+dependencies, just clean code.
+
+SyncScript is compatible with "normal" JavaScript and you can still write callback-style code if you want
+to. All features and functionality of JavaScript is still available and left unaffected by SyncScript. All
+existing libraries are compatible and will remain unaffected by the compilation process.
+
+You can still interface with standard callback-based code and libraries as usual or by using the SyncScript
+sync() method to call an async method synchronously.
+
+## Why?
 If you've coded in JavaScript for any length of time you will know that pretty soon you start to
 pile up tons of callbacks (callback-hell as it is sometimes referred). You hate it, I hate it and
 so does everyone else that codes in JS but it is a necessary evil... or is it?

@@ -6,7 +6,7 @@ var myObj = {
 
 var asyncCall = function (url, callback) {
 	var response, body = sync(myObj.insideObj.request(url));
-	callback(false, response, body);
+	callback(err, response, body);
 };
 
 var requestResponse, googleBody = sync(asyncCall('http://www.google.com'));

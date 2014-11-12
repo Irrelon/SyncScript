@@ -16,7 +16,7 @@
 		"type": "git",
 		"url": "https://github.com/coolbloke1324/IrrelonSyncScript"
 	},
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"dependencies": {
 		"esprima": "1.2.2",
 		"escodegen": "1.4.1",
