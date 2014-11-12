@@ -114,6 +114,12 @@ In this section I will describe how to use SyncScript as a compiler from the com
 IDEs such as WebStorm and PHPStorm and also how to include it in your own Node.js applications so you can take the compiled
 output and do further processing to the code.
 
+### Online Compiler Service
+Instead of installing SyncScript you can send your code to the online compiler service or paste it into the
+compiler page to instantly see the compiler output.
+
+Further instructions for the online compiler service coming shortly...
+
 ## Copyright and License
 SyncScript is copyright Irrelon Software Limited and license under the open-source MIT license.
 
