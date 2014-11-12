@@ -1,6 +1,5 @@
 # Irrelon SyncScript
-> This is beta code and should not be relied on for production use yet. It may not work in all cases and
-may generate incorrect output from your code. When it is production ready we will update this message.
+> This project will be regularly updated. See the roadmap for more details.
 
 Write clean, readable synchronous JavaScript code and output to callback-based async code automatically.
 Compiles to readable, compatible JS code that runs everywhere and on every browser. No libraries or
@@ -77,8 +76,37 @@ if (!err) {
 }
 ```
 
-Synchronous code is easier to read and understand and requires less boilerplate effort and more of what actually makes
-your application work.
+Synchronous code is easier to read and understand and requires less boilerplate effort and more of what
+actually makes your application work.
+
+## Setting Callback Scope
+You can section areas of code into waiting for async calls to complete or not by wrapping them in curly
+braces. Take the following code for example. The second call to addSync waits for the first to finish:
+
+```
+var err, myVal = sync(addAsync(1, 2, 3, 4));
+console.log(myVal);
+
+var err, myVal = sync(addAsync(1, 2, 3, 4));
+console.log(myVal);
+```
+
+What if you want both async calls to execute at the same time? You can achieve this by wrapping each call
+and it's dependant code in braces:
+
+```
+{
+	var err, myVal = sync(addAsync(1, 2, 3, 4));
+	console.log(myVal);
+}
+
+{
+	var err, myVal = sync(addAsync(1, 2, 3, 4));
+	console.log(myVal);
+}
+```
+
+Now both calls will execute and return in whichever order they complete in.
 
 ## How to Use It
 
@@ -123,9 +151,57 @@ compiler page to instantly see the compiler output.
 
 Further instructions for the online compiler service coming shortly...
 
+### Technical Details and How It Works
+SyncScript transpiles to an AST after which the tree is analysed, sync calls are identified and then the
+AST is modified to produce callback-based code where the sync calls are. After modification of the AST it
+is taken and re-compiled back into JavaScript.
+
 ## Copyright and License
 SyncScript is copyright Irrelon Software Limited and license under the open-source MIT license.
 
 ## Contributing, Issues and Bugs
 Contributions and pull requests are welcome! If you have any issues or find any bugs please log them in the GitHub issue 
 tracker for this repo.
+
+### Roadmap
+
+#### 1.0.7
+* Optional language extensions - sleep and finish
+
+###### Sleep
+Call a sleep method mid-code to pause execution for the specified number of milliseconds:
+
+```
+console.log(new Date())
+sleep(1000);
+console.log(new Date()) 
+```
+
+###### Finish
+Pass comma-separated async calls to finish() and code will wait for all the passed calls to complete
+before executing the next lines of code:
+
+```
+var err, response, body = finish(
+	request('http://www.google.com'),
+	request('http://www.irrelon.com')
+);
+
+// Console log the google response
+console.log(err[0], response[0], body[0]);
+
+// Console log the irrelon response
+console.log(err[1], response[1], body[1]);
+```
+
+The results are stored in the err, response and body variables as an array and are assigned to the
+index that the call corresponds to, so the request to google.com's err, response and body values are
+stored in err[0], response[0] and body[0], while the request to irrelon.com has it's results stored
+in err[1], response[1] and body[1].
+
+#### 1.0.8
+* Better documentation
+* Source code JSDoc commenting
+
+#### 1.0.9
+* Unit tests coverage

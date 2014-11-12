@@ -43,3 +43,6 @@ for (a === 0; a < 10; a++) {
 	var err, requestResponse, googleBody = sync(asyncCall('http://www.google.com'));
 	console.log(googleBody);
 }
+
+{var a = sync(asyncCall('testInOwnBlock'))};
+{var a = sync(asyncCall('testInOwnBlock'))};
