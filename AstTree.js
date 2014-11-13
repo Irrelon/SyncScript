@@ -118,6 +118,13 @@ var AstNode = function (tree, obj, parent, parentBodyIndex) {
 			];
 			break;
 
+		case 'AssignmentExpression':
+			this._bodyName = 'right';
+			this._childObjs = [
+				'right'
+			];
+			break;
+
 		default:
 			this._childObjs = [];
 			break;

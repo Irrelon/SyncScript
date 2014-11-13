@@ -23,30 +23,30 @@ if (args[0]) {
 	parser.awaitName('sync');
 	parseResult = parser.parse(fs.readFileSync(args[0]));
 
-	if (extraArgs.length) {
+	while (extraArgs.length) {
 		// Parse the args and work out what the user wants
-		argCmd = extraArgs[0];
-		argVal = extraArgs[1];
+		argCmd = extraArgs.shift();
+		argVal = extraArgs.shift();
 
 		switch (argCmd) {
 			case '-ast':
 				// Output ast file
+				//console.log('Writing AST: ' + argVal);
 				fs.writeFileSync(argVal, JSON.stringify(parseResult.ast, null, 4));
 				break;
 
 			case '-out':
 				// Output source file
+				//console.log('Writing Source: ' + argVal);
 				fs.writeFileSync(argVal, parseResult.source);
 
 				// Set out flag to true
 				out = true;
 				break;
 		}
-
-    	extraArgs = extraArgs.slice(2);
     }
 
-    if (out === false) {
+    if (!out) {
     	// Output to stdout
     	process.stdout.write(parseResult.source + '\n');
     }
