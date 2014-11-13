@@ -50,6 +50,6 @@ if (args[0]) {
     	// Output to stdout
     	process.stdout.write(parseResult.source + '\n');
     }
-}} else {
+} else {
 	process.stdout.write('Error, missing input file\n');
 }
