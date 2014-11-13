@@ -16,7 +16,7 @@
 		"type": "git",
 		"url": "https://github.com/coolbloke1324/SyncScript"
 	},
-	"version": "1.0.8",
+	"version": "1.0.9",
 	"dependencies": {
 		"esprima": "1.2.2",
 		"escodegen": "1.4.1",
