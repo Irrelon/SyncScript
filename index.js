@@ -220,7 +220,10 @@ Parser.prototype.parse = function (code) {
 		}
 	}
 
-	return escodegen.generate(self.ast);
+	return {
+		source: escodegen.generate(self.ast),
+		ast: self.ast
+	}
 };
 
 module.exports = {

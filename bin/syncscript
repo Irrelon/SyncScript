@@ -11,18 +11,45 @@ var path = require("path"),
 	lib = path.join(path.dirname(fs.realpathSync(__filename)), '../index.js'),
 	SyncScriptParser = require(lib).Parser,
 	args = process.argv.slice(2),
-	code;
+	code,
+	extraArgs = args.slice(1),
+	argCmd,
+	argVal,
+	parseResult,
+	out = false;
 
 if (args[0]) {
 	var parser = new SyncScriptParser();
 	parser.awaitName('sync');
-	newCode = parser.parse(fs.readFileSync(args[0]));
+	parseResult = parser.parse(fs.readFileSync(args[0]));
 
-	if (args[1]) {
-    	fs.writeFileSync(args[1], newCode);
-    } else {
-    	process.stdout.write(newCode + '\n');
+	if (extraArgs.length) {
+		// Parse the args and work out what the user wants
+		argCmd = extraArgs[0];
+		argVal = extraArgs[1];
+
+		switch (argCmd) {
+			case '-ast':
+				// Output ast file
+				fs.writeFileSync(argVal, parseResult.ast);
+				break;
+
+			case '-out':
+				// Output source file
+				fs.writeFileSync(argVal, parseResult.source);
+
+				// Set out flag to true
+				out = true;
+				break;
+		}
+
+    	extraArgs = extraArgs.slice(2);
     }
-} else {
+
+    if (out === false) {
+    	// Output to stdout
+    	process.stdout.write(parseResult.source + '\n');
+    }
+}} else {
 	process.stdout.write('Error, missing input file\n');
 }
