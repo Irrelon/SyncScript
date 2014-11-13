@@ -122,13 +122,31 @@ Install SyncScript via npm:
 ### Use From Command Line
 To compile a SyncScript file to JavaScript you can use the command line:
 
-	syncscript <yourinputfile.js> <youroutputfile.js>
+	syncscript <yourinputfile.js>
 
 E.g.
 
-	syncscript ./test/guineaPig.js ./test/output.js
+	syncscript ./test/guineaPig.js
 
-If you leave off the second argument the output is sent to stdout which allows you to pipe it elsewhere.
+Output is sent to stdout. If you prefer the output to be saved to a file, present the -out option
+with the command:
+
+
+	syncscript <yourinputfile.js> -out <youroutputfile.js>
+
+E.g.
+
+	syncscript ./test/guineaPig.js -out ./test/output.js
+
+You can also output the AST used to generate the output via the -ast option:
+
+
+
+	syncscript <yourinputfile.js> -ast <yourastfile.js>
+
+E.g.
+
+	syncscript ./test/guineaPig.js -ast ./ast.json
 
 ### Use From JetBrains IDE via File Watcher
 File watchers auto-execute programs against your code as you make changes. A good example would be Google's
