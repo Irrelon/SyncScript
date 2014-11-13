@@ -31,7 +31,7 @@ if (args[0]) {
 		switch (argCmd) {
 			case '-ast':
 				// Output ast file
-				fs.writeFileSync(argVal, parseResult.ast);
+				fs.writeFileSync(argVal, JSON.stringify(parseResult.ast, null, 4));
 				break;
 
 			case '-out':

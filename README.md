@@ -169,7 +169,7 @@ tracker for this repo.
 
 ### Roadmap
 
-#### 1.0.7
+#### 1.1.0
 * Optional language extensions - sleep and finish
 
 ###### Sleep
@@ -203,9 +203,9 @@ index that the call corresponds to, so the request to google.com's err, response
 stored in err[0], response[0] and body[0], while the request to irrelon.com has it's results stored
 in err[1], response[1] and body[1].
 
-#### 1.0.8
+#### 1.2.0
 * Better documentation
 * Source code JSDoc commenting
 
-#### 1.0.9
+#### 1.3.0
 * Unit tests coverage
