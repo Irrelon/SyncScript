@@ -1,5 +1,5 @@
 # Irrelon SyncScript
-> This project will be regularly updated. See the roadmap for more details.
+> ES6 has made async/await available and makes this project redundant. However it is still a great project to learn how to use ASTs to manipulate / extend exising language functionality.
 
 Write clean, readable synchronous JavaScript code and output to callback-based async code automatically.
 Compiles to readable, compatible JS code that runs everywhere and on every browser. No libraries or
