@@ -86,7 +86,7 @@ to block.
 
 ## Setting Callback Scope
 You can section areas of code into waiting for async calls to complete or not by wrapping them in curly
-braces. Take the following code for example. The second call to addSync waits for the first to finish:
+braces. Take the following code for example. The second call to addSync waits for the first to finish before it is executed:
 
 ```
 var err, myVal = sync(addAsync(1, 2, 3, 4));
@@ -96,7 +96,7 @@ var err, myVal = sync(addAsync(1, 2, 3, 4));
 console.log(myVal);
 ```
 
-What if you want both async calls to execute at the same time? You can achieve this by wrapping each call
+What if you want both async calls to execute at the same time in parallel? You can achieve this by wrapping each call
 and it's dependant code in braces:
 
 ```
