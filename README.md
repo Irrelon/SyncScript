@@ -32,10 +32,8 @@ You could just write:
 
 ```
 var err, response, body = sync(getHtmlFromUrl('http://www.myserver.org/someHtmlFile.html'));
-
-if (!err && response.status === 200) {
-  $('body').append(body);
-}
+if (err || response.status !== 200) return;
+$('body').append(body);
 ```
 
 Notice how we threw away the callback function and just used the err, repsonse and body variables as if they were immediately
@@ -68,12 +66,15 @@ asyncCall(null, function (err, data1) {
 Now look at how you would write that in SyncScript:
 
 ```
-var err, data1 = sync(asyncCall(null));
-if (!err) { var err, data2 = sync(asyncCall(data1)); }
-if (!err) {
-  var err, data3 = sync(asyncCall(data2));
-  // Yay we have our final data in data3
-}
+var err1, data1 = sync(asyncCall(null));
+if (err1) return;
+
+var err2, data2 = sync(asyncCall(data1));
+if (err2) return;
+
+var err3, data3 = sync(asyncCall(data2));
+if (err3) return;
+// Yay we have our final data in data3
 ```
 
 Synchronous code is easier to read and understand and requires less boilerplate effort and more of what
@@ -110,7 +111,7 @@ and it's dependant code in braces:
 }
 ```
 
-Now both calls will execute and return in whichever order they complete in.
+Now both calls will execute in parallel and return in whichever order they complete in.
 
 ## How to Use It
 
